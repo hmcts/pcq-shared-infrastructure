@@ -1,4 +1,4 @@
-# pcq-shared-infrastructure 
+# pcq-shared-infrastructure
 
 This module sets up the shared infrastructure for PCQ.
 
