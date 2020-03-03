@@ -1,6 +1,6 @@
-# cmc-shared-infrastructure
+# pcq-shared-infrastructure
 
-This module sets up the shared infrastructure for CMC.
+This module sets up the shared infrastructure for PCQ.
 
 ## Variables
 
@@ -14,7 +14,7 @@ The following parameters are required by this module
 
 The following parameters are optional
 
-- `product` The (short) name of the product. Default is "cmc". 
+- `product` The (short) name of the product. Default is "pcq". 
 - `location` The location of the Azure data center. Default is "UK South".
 - `appinsights_location` Location for Application Insights. Default is "West Europe".
 - `application_type` Type of Application Insights (Web/Other). Default is "Web".
