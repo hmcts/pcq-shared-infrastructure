@@ -17,7 +17,7 @@ variable "common_tags" {
 variable "env" {}
 
 variable "application_type" {
-  default     = "Web"
+  default     = "web"
   description = "Type of Application Insights (Web/Other)"
 }
 
