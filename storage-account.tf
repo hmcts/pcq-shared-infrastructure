@@ -19,9 +19,10 @@ locals {
     "${data.azurerm_subnet.aks-00-infra.id}",
     "${data.azurerm_subnet.aks-01-infra.id}"]
 
-  sa_subnets_list = "${data.azurerm_subnet.jenkins_subnet.id},${data.azurerm_subnet.aks-00-mgmt.id},${data.azurerm_subnet.aks-01-mgmt.id},${data.azurerm_subnet.aks-00-infra.id},${data.azurerm_subnet.aks-01-infra.id}"
+  //sa_subnets_list = "${data.azurerm_subnet.jenkins_subnet.id},${data.azurerm_subnet.aks-00-mgmt.id},${data.azurerm_subnet.aks-01-mgmt.id},${data.azurerm_subnet.aks-00-infra.id},${data.azurerm_subnet.aks-01-infra.id}"
 
-  sa_subnets_array = split(",", sa_subnets_list)
+  sa_subnets_array = "${var.env == "aat" ? local.sa_aat_subnets : local.sa_subnets}"
+
 }
 
 // pcq blob Storage Account
