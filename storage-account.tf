@@ -40,12 +40,13 @@ module "pcq_storage_account" {
   common_tags               = "${var.common_tags}"
   team_contact              = "${var.team_contact}"
   destroy_me                = "${var.destroy_me}"
-  
+
   sa_subnets = "${var.env == "aat" ? local.sa_aat_subnets: local.sa_subnets}"
 }
 
 resource "azurerm_storage_management_policy" "pcq_lifecycle_rules" {
-  storage_account_id = "${module.pcq_storage_account.id}"
+  storage_account_id = "${module.pcq_storage_account.storageaccount_id}"
+
   rule {
     name    = "pcqExpirationRule"
     enabled = true
