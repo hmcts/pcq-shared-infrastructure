@@ -3,16 +3,21 @@ locals {
   mgmt_network_name         = "core-cftptl-intsvc-vnet"
   mgmt_network_rg_name      = "aks-infra-cftptl-intsvc-rg"
 
-  sa_aat_subnets =
-    "${data.azurerm_subnet.jenkins_subnet.id},${data.azurerm_subnet.aks-00-mgmt.id},${data.azurerm_subnet.aks-01-mgmt.id},"+
-    "${data.azurerm_subnet.aks-00-infra.id},${data.azurerm_subnet.aks-01-infra.id},${data.azurerm_subnet.aks-00-preview.id},"+
-    "${data.azurerm_subnet.aks-01-preview.id}"
+  sa_aat_subnets = [
+    "${data.azurerm_subnet.jenkins_subnet.id}",
+    "${data.azurerm_subnet.aks-00-mgmt.id}",
+    "${data.azurerm_subnet.aks-01-mgmt.id}",
+    "${data.azurerm_subnet.aks-00-infra.id}",
+    "${data.azurerm_subnet.aks-01-infra.id}",
+    "${data.azurerm_subnet.aks-00-preview.id}",
+    "${data.azurerm_subnet.aks-01-preview.id}"]
 
-  sa_subnets =
-    "${data.azurerm_subnet.jenkins_subnet.id},${data.azurerm_subnet.aks-00-mgmt.id},${data.azurerm_subnet.aks-01-mgmt.id},"+
-    "${data.azurerm_subnet.aks-00-infra.id},${data.azurerm_subnet.aks-01-infra.id}"
-
-  sa_subnets_string = "${var.env == "aat" ? local.sa_aat_subnets: local.sa_subnets}"
+  sa_subnets = [
+    "${data.azurerm_subnet.jenkins_subnet.id}",
+    "${data.azurerm_subnet.aks-00-mgmt.id}",
+    "${data.azurerm_subnet.aks-01-mgmt.id}",
+    "${data.azurerm_subnet.aks-00-infra.id}",
+    "${data.azurerm_subnet.aks-01-infra.id}"]
 }
 
 // pcq blob Storage Account
@@ -36,7 +41,7 @@ module "pcq_storage_account" {
   team_contact              = "${var.team_contact}"
   destroy_me                = "${var.destroy_me}"
 
-  sa_subnets = "${list(local.sa_subnets_string)}"
+  sa_subnets = "${local.sa_aat_subnets}"
 }
 
 resource "azurerm_storage_management_policy" "pcq_lifecycle_rules" {
