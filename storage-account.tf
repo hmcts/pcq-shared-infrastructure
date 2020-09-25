@@ -40,13 +40,7 @@ module "pcq_storage_account" {
   common_tags               = "${var.common_tags}"
   team_contact              = "${var.team_contact}"
   destroy_me                = "${var.destroy_me}"
-
-  blob_properties {
-    delete_retention_policy {
-      days                  = 90
-    }
-  }
-
+  
   sa_subnets = "${var.env == "aat" ? local.sa_aat_subnets: local.sa_subnets}"
 }
 
