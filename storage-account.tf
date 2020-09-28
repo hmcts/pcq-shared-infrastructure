@@ -52,6 +52,9 @@ resource "azurerm_storage_management_policy" "pcq_lifecycle_rules" {
   rule {
     name    = "pcqExpirationRule"
     enabled = true
+    filters {
+      blob_types   = ["blockBlob"]
+    }
     actions {
       base_blob {
         delete_after_days_since_modification_greater_than = 90
