@@ -2,6 +2,24 @@ locals {
   storage_account_name      = "${var.product}shared${var.env}"
   mgmt_network_name         = "core-cftptl-intsvc-vnet"
   mgmt_network_rg_name      = "aks-infra-cftptl-intsvc-rg"
+
+  sa_aat_subnets = [
+    "${data.azurerm_subnet.jenkins_subnet.id}",
+    "${data.azurerm_subnet.aks-00-mgmt.id}",
+    "${data.azurerm_subnet.aks-01-mgmt.id}",
+    "${data.azurerm_subnet.aks-00-infra.id}",
+    "${data.azurerm_subnet.aks-01-infra.id}",
+    "${data.azurerm_subnet.aks-00-preview.id}",
+    "${data.azurerm_subnet.aks-01-preview.id}"]
+
+  sa_other_subnets = [
+    "${data.azurerm_subnet.jenkins_subnet.id}",
+    "${data.azurerm_subnet.aks-00-mgmt.id}",
+    "${data.azurerm_subnet.aks-01-mgmt.id}",
+    "${data.azurerm_subnet.aks-00-infra.id}",
+    "${data.azurerm_subnet.aks-01-infra.id}"]
+
+  sa_subnets = "${split(",", var.env == "aat" ? join(",", local.sa_aat_subnets) : join(",", local.sa_other_subnets))}"
 }
 
 // pcq blob Storage Account
@@ -25,14 +43,21 @@ module "pcq_storage_account" {
   team_contact              = "${var.team_contact}"
   destroy_me                = "${var.destroy_me}"
 
-  sa_subnets = [
-    "${data.azurerm_subnet.jenkins_subnet.id}",
-    "${data.azurerm_subnet.aks-00-mgmt.id}",
-    "${data.azurerm_subnet.aks-01-mgmt.id}",
-    "${data.azurerm_subnet.aks-00-infra.id}",
-    "${data.azurerm_subnet.aks-01-infra.id}",
-    "${data.azurerm_subnet.aks-00-preview.id}",
-    "${data.azurerm_subnet.aks-01-preview.id}"]
+  sa_subnets = "${local.sa_subnets}"
+}
+
+resource "azurerm_storage_management_policy" "pcq_lifecycle_rules" {
+  storage_account_id = "${module.pcq_storage_account.storageaccount_id}"
+
+  rule {
+    name    = "pcqExpirationRule"
+    enabled = true
+    actions {
+      base_blob {
+        delete_after_days_since_modification_greater_than = 90
+      }
+    }
+  }
 }
 
 data "azurerm_virtual_network" "mgmt_vnet" {
