@@ -1,5 +1,5 @@
 module "pcq-vault" {
-  source                     = "git@github.com:hmcts/cnp-module-key-vault?ref=master"
+  source                     = "git@github.com:hmcts/cnp-module-key-vault?ref=azurermv2"
   name                       = "pcq-${var.env}"
   product                    = "${var.product}"
   env                        = "${var.env}"
@@ -10,7 +10,8 @@ module "pcq-vault" {
   # dcd_group_pcq_v2 group object ID
   product_group_object_id    = "731343b8-be79-4a97-b14e-60be786ad393"
   common_tags                = "${var.common_tags}"
-  managed_identity_object_id = "${var.managed_identity_object_id}"
+  managed_identity_object_ids = ["${var.managed_identity_object_id}"]
+  create_managed_identity    = true
 }
 
 data "azurerm_key_vault" "pcq_key_vault" {
