@@ -1,10 +1,10 @@
 resource "azurerm_resource_group" "rg" {
   name     = "${var.product}-${var.env}"
-  location = "${var.location}"
+  location = var.location
 }
 
 locals {
-  tags = "${merge(var.common_tags,
+  tags = merge(var.common_tags,
     map("Team Contact", "#pcq")
-    )}"
+  )
 }
