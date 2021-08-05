@@ -20,6 +20,12 @@ locals {
     data.azurerm_subnet.aks-01-infra.id]
 
   sa_subnets = split(",", var.env == "aat" ? join(",", local.sa_aat_subnets) : join(",", local.sa_other_subnets))
+
+  aat_cft_vnet_name           = "cft-aat-vnet"
+  aat_cft_vnet_resource_group = "cft-aat-network-rg"
+
+  app_aks_network_name = var.env ==  "aat" ? local.aat_cft_vnet_name : "core-${var.env}-vnet"
+  app_aks_network_rg_name =  var.env ==  "aat" ? local.aat_cft_vnet_resource_group : "aks-infra-${var.env}-rg"
 }
 
 // pcq blob Storage Account
@@ -114,8 +120,8 @@ data "azurerm_subnet" "aks-01-infra" {
 
 data "azurerm_virtual_network" "aks_preview_vnet" {
   provider            = azurerm.aks-preview
-  name                = "core-preview-vnet"
-  resource_group_name = "aks-infra-preview-rg"
+  name                = local.app_aks_network_name
+  resource_group_name = local.app_aks_network_rg_name
 }
 
 data "azurerm_subnet" "aks-00-preview" {
