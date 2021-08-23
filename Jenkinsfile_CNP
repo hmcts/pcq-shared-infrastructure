@@ -2,6 +2,9 @@
 //noinspection GroovyUnusedAssignment
 @Library("Infrastructure") _
 
+def branchesToSync = ['demo','ithc', 'perftest']
+
 withInfraPipeline("pcq") {
   enableSlackNotifications("#pcq-builds")
+  syncBranchesWithMaster(branchesToSync)
 }
