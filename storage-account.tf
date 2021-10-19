@@ -3,11 +3,8 @@ locals {
   mgmt_network_name         = "core-cftptl-intsvc-vnet"
   mgmt_network_rg_name      = "aks-infra-cftptl-intsvc-rg"
 
-  aat_cft_vnet_name = "cft-aat-vnet"
-  aat_cft_vnet_resource_group = "cft-aat-network-rg"
-
-  vnet_name = var.env == "aat" ? local.aat_cft_vnet_name : "core-${var.env}-vnet"
-  vnet_resource_group_name = var.env == "aat" ? local.aat_cft_vnet_resource_group : "aks-infra-${var.env}-rg"
+  vnet_name = var.env == "sbox" || var.env == "perftest" || var.env == "aat" || var.env == "ithc" ? "cft-${var.env}-vnet" : "core-${var.env}-vnet"
+  vnet_resource_group_name = var.env == "sbox" || var.env == "perftest" || var.env == "aat" || var.env == "ithc" ? "cft-${var.env}-network-rg" : "aks-infra-${var.env}-rg"
 
   sa_aat_subnets = [
     data.azurerm_subnet.jenkins_subnet.id,
