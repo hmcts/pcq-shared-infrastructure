@@ -117,8 +117,8 @@ data "azurerm_subnet" "aks-01-infra" {
 
 data "azurerm_virtual_network" "aks_preview_vnet" {
   provider            = azurerm.aks-preview
-  name                = "cft-preview-vnet"
-  resource_group_name = "cft-preview-network-rg"
+  name                = local.vnet_name
+  resource_group_name = local.vnet_resource_group_name
 }
 
 data "azurerm_subnet" "aks-00-preview" {
