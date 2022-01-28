@@ -1,7 +1,7 @@
 locals {
   storage_account_name      = "${var.product}shared${var.env}"
-  mgmt_network_name         = "core-cftptl-intsvc-vnet"
-  mgmt_network_rg_name      = "aks-infra-cftptl-intsvc-rg"
+  mgmt_network_name         = "cft-ptl-vnet"
+  mgmt_network_rg_name      = "cft-ptl-network-rg"
 
   vnet_name = var.env == "sbox" || var.env == "perftest" || var.env == "aat" || var.env == "ithc" || var.env == "preview" || var.env == "prod" ? "cft-${var.env}-vnet" : "core-${var.env}-vnet"
   vnet_resource_group_name = var.env == "sbox" || var.env == "perftest" || var.env == "aat" || var.env == "ithc" || var.env == "preview" || var.env == "prod" ? "cft-${var.env}-network-rg" : "aks-infra-${var.env}-rg"
