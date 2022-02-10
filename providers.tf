@@ -20,3 +20,9 @@ provider "azurerm" {
   subscription_id = var.mgmt_subscription_id
   features {}
 }
+
+provider "azurerm" {
+  alias           = "aks-prod"
+  subscription_id = var.aks_infra_subscription_id
+  features {}
+}

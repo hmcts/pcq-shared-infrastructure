@@ -3,8 +3,8 @@ locals {
   mgmt_network_name         = "cft-ptl-vnet"
   mgmt_network_rg_name      = "cft-ptl-network-rg"
 
-  vnet_name = var.env == "sbox" || var.env == "perftest" || var.env == "aat" || var.env == "ithc" || var.env == "preview" ? "cft-${var.env}-vnet" : "core-${var.env}-vnet"
-  vnet_resource_group_name = var.env == "sbox" || var.env == "perftest" || var.env == "aat" || var.env == "ithc" || var.env == "preview" ? "cft-${var.env}-network-rg" : "aks-infra-${var.env}-rg"
+  vnet_name = var.env == "sbox" || var.env == "perftest" || var.env == "aat" || var.env == "ithc" || var.env == "preview" || var.env == "prod" ? "cft-${var.env}-vnet" : "core-${var.env}-vnet"
+  vnet_resource_group_name = var.env == "sbox" || var.env == "perftest" || var.env == "aat" || var.env == "ithc" || var.env == "preview" || var.env == "prod" ? "cft-${var.env}-network-rg" : "aks-infra-${var.env}-rg"
 
   sa_aat_subnets = [
     data.azurerm_subnet.jenkins_subnet.id,
@@ -14,6 +14,16 @@ locals {
     data.azurerm_subnet.aks-01-infra.id,
     data.azurerm_subnet.aks-00-preview.id,
     data.azurerm_subnet.aks-01-preview.id]
+  
+  sa_prod_subnets = [
+    data.azurerm_subnet.jenkins_subnet.id,
+    data.azurerm_subnet.aks-00-mgmt.id,
+    data.azurerm_subnet.aks-01-mgmt.id,
+    data.azurerm_subnet.aks-00-infra.id,
+    data.azurerm_subnet.aks-01-infra.id,
+    data.azurerm_subnet.aks-00-prod.id,
+    data.azurerm_subnet.aks-01-prod.id]
+
 
   sa_other_subnets = [
     data.azurerm_subnet.jenkins_subnet.id,
@@ -22,7 +32,7 @@ locals {
     data.azurerm_subnet.aks-00-infra.id,
     data.azurerm_subnet.aks-01-infra.id]
 
-  sa_subnets = split(",", var.env == "aat" ? join(",", local.sa_aat_subnets) : join(",", local.sa_other_subnets))
+  sa_subnets = split(",", var.env == "aat" ? join(",", local.sa_aat_subnets) : join(",", local.sa_other_subnets) || var.env == "prod" ? join(",", local.sa_prod_subnets): join(",", local.sa_other_subnets))
 }
 
 // pcq blob Storage Account
@@ -133,6 +143,26 @@ data "azurerm_subnet" "aks-01-preview" {
   name                 = "aks-01"
   virtual_network_name = data.azurerm_virtual_network.aks_preview_vnet.name
   resource_group_name  = data.azurerm_virtual_network.aks_preview_vnet.resource_group_name
+}
+
+data "azurerm_virtual_network" "aks_prod_vnet" {
+  provider            = azurerm.aks-preview
+  name                = "core-prod-vnet"
+  resource_group_name = "aks-infra-prod-rg"
+}
+
+data "azurerm_subnet" "aks-00-prod" {
+  provider             = azurerm.aks-prod
+  name                 = "aks-00"
+  virtual_network_name = data.azurerm_virtual_network.aks_prod_vnet.name
+  resource_group_name  = data.azurerm_virtual_network.aks_prod_vnet.resource_group_name
+}
+
+data "azurerm_subnet" "aks-01-prod" {
+  provider             = azurerm.aks-prod
+  name                 = "aks-01"
+  virtual_network_name = data.azurerm_virtual_network.aks_prod_vnet.name
+  resource_group_name  = data.azurerm_virtual_network.aks_prod_vnet.resource_group_name
 }
 
 resource "azurerm_storage_container" "pcq_containers" {
