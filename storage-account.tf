@@ -3,8 +3,8 @@ locals {
   mgmt_network_name         = "cft-ptl-vnet"
   mgmt_network_rg_name      = "cft-ptl-network-rg"
 
-  vnet_name = var.env == "sbox" || var.env == "perftest" || var.env == "aat" || var.env == "ithc" || var.env == "preview" || var.env == "prod" ? "cft-${var.env}-vnet" : "core-${var.env}-vnet"
-  vnet_resource_group_name = var.env == "sbox" || var.env == "perftest" || var.env == "aat" || var.env == "ithc" || var.env == "preview" || var.env == "prod" ? "cft-${var.env}-network-rg" : "aks-infra-${var.env}-rg"
+  vnet_name = var.env == "sbox" || var.env == "perftest" || var.env == "aat" || var.env == "ithc" || var.env == "preview" ? "cft-${var.env}-vnet" : "core-${var.env}-vnet"
+  vnet_resource_group_name = var.env == "sbox" || var.env == "perftest" || var.env == "aat" || var.env == "ithc" || var.env == "preview" ? "cft-${var.env}-network-rg" : "aks-infra-${var.env}-rg"
 
   sa_aat_subnets = [
     data.azurerm_subnet.jenkins_subnet.id,
@@ -147,8 +147,8 @@ data "azurerm_subnet" "aks-01-preview" {
 
 data "azurerm_virtual_network" "aks_prod_vnet" {
   provider            = azurerm.aks-infra
-  name                = "core-prod-vnet"
-  resource_group_name = "aks-infra-prod-rg"
+  name                = "cft-prod-vnet"
+  resource_group_name = "cft-prod-network-rg"
 }
 
 data "azurerm_subnet" "aks-00-prod" {
