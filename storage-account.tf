@@ -146,7 +146,7 @@ data "azurerm_subnet" "aks-01-preview" {
 }
 
 data "azurerm_virtual_network" "aks_prod_vnet" {
-  provider            = azurerm.aks-prod
+  provider            = azurerm.aks-infra
   name                = "core-prod-vnet"
   resource_group_name = "aks-infra-prod-rg"
 }
