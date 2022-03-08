@@ -110,7 +110,7 @@ data "azurerm_subnet" "aks-01-infra" {
 }
 
 data "azurerm_virtual_network" "aks_prod_vnet" {
-  provider            = azurerm.aks-infra
+  provider            = azurerm.aks-prod
   name                = "cft-prod-vnet"
   resource_group_name = "cft-prod-network-rg"
 }
