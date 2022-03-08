@@ -116,7 +116,7 @@ data "azurerm_virtual_network" "aks_prod_vnet" {
 }
 
 data "azurerm_subnet" "aks-00-prod" {
-  provider             = azurerm.aks-infra
+  provider             = azurerm.aks-prod
   name                 = "aks-00"
   virtual_network_name = data.azurerm_virtual_network.aks_prod_vnet.name
   resource_group_name  = data.azurerm_virtual_network.aks_prod_vnet.resource_group_name
