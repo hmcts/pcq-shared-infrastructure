@@ -15,7 +15,7 @@ locals {
   ]
 
   preview_subnets  = var.env == "aat" ? [data.azurerm_subnet.aks-00-preview.id, data.azurerm_subnet.aks-00-preview.id] : []
-  cft_prod_subnets = var.env == "prod" ? [data.azurerm_subnet.aks-00-prod.id, data.azurerm_subnet.aks-01-prod-subnet.id] : []
+  cft_prod_subnets = var.env == "prod" ? [data.azurerm_subnet.aks-00-prod.id, data.azurerm_subnet.aks-01-prod.id] : []
   sa_subnets       = concat(local.standard_subnets, local.preview_subnets, local.cft_prod_subnets)
 }
 
@@ -147,26 +147,6 @@ data "azurerm_subnet" "aks-01-preview" {
   name                 = "aks-01"
   virtual_network_name = data.azurerm_virtual_network.aks_preview_vnet.name
   resource_group_name  = data.azurerm_virtual_network.aks_preview_vnet.resource_group_name
-}
-
-data "azurerm_virtual_network" "aks_prod_vnet" {
-  provider            = azurerm.aks-prod
-  name                = "cft-prod-vnet"
-  resource_group_name = "cft-prod-network-rg"
-}
-
-data "azurerm_subnet" "aks-00-prod" {
-  provider             = azurerm.aks-prod
-  name                 = "aks-00"
-  virtual_network_name = data.azurerm_virtual_network.aks_prod_vnet.name
-  resource_group_name  = data.azurerm_virtual_network.aks_prod_vnet.resource_group_name
-}
-
-data "azurerm_subnet" "aks-01-prod" {
-  provider             = azurerm.aks-prod
-  name                 = "aks-01"
-  virtual_network_name = data.azurerm_virtual_network.aks_prod_vnet.name
-  resource_group_name  = data.azurerm_virtual_network.aks_prod_vnet.resource_group_name
 }
 
 resource "azurerm_storage_container" "pcq_containers" {
