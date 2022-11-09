@@ -1,6 +1,14 @@
 # pcq-shared-infrastructure
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 This module sets up the shared infrastructure for PCQ.
+
+## Overview
+
+<p align="center">
+<a href="https://github.com/hmcts/pcq-frontend">pcq-frontend</a> • <a href="https://github.com/hmcts/pcq-backend">pcq-backend</a> • <a href="https://github.com/hmcts/pcq-consolidation-service">pcq-consolidation-service</a> • <b><a href="https://github.com/hmcts/pcq-shared-infrastructure">pcq-shared-infrastructure</a></b> • <a href="https://github.com/hmcts/pcq-loader">pcq-loader</a>
+</p>
 
 ## Variables
 
