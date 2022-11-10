@@ -3,7 +3,7 @@ locals {
   mgmt_network_name            = "cft-ptl-vnet"
   mgmt_network_rg_name         = "cft-ptl-network-rg"
   
-  vnet_name                    = var.env != "prod" ? "cft-${var.env}-vnet" : "core-${var.env}-vnet"
+  vnet_name                    = "cft-${var.env}-vnet"
   vnet_resource_group_name     = "cft-${var.env}-network-rg"
 
   standard_subnets = [
