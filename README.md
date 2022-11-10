@@ -10,6 +10,12 @@ This module sets up the shared infrastructure for PCQ.
 <a href="https://github.com/hmcts/pcq-frontend">pcq-frontend</a> • <a href="https://github.com/hmcts/pcq-backend">pcq-backend</a> • <a href="https://github.com/hmcts/pcq-consolidation-service">pcq-consolidation-service</a> • <b><a href="https://github.com/hmcts/pcq-shared-infrastructure">pcq-shared-infrastructure</a></b> • <a href="https://github.com/hmcts/pcq-loader">pcq-loader</a>
 </p>
 
+<br>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/hmcts/pcq-frontend/master/pcq_overview.png" width="500"/>
+</p>
+
 ## Variables
 
 ### Configuration
