@@ -35,6 +35,8 @@ module "pcq_storage_account" {
   // enable_file_encryption    = true
   enable_https_traffic_only = true
 
+  sftp_enabled = var.enable_sftp
+
   // Tags
   common_tags  = var.common_tags
   team_contact = var.team_contact
