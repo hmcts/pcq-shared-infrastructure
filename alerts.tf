@@ -11,7 +11,7 @@ module "pcq-consolidation-fail-action-group-slack-email" {
 
 module "pcq-consolidation-service-failures-alert" {
   source                     = "git@github.com:hmcts/cnp-module-metric-alert"
-  location                   = var.appinsights_location
+  location                   = "global"
   app_insights_name          = "pcq-${var.env}"
   alert_name                 = "pcq-consolidation-service-${var.env}-failures-alert"
   alert_desc                 = "Triggers when pcq consolidation service fail to run"
@@ -24,7 +24,7 @@ module "pcq-consolidation-service-failures-alert" {
   severity_level             = "2"
   action_group_name          = module.pcq-consolidation-fail-action-group-slack-email.action_group_name
   trigger_threshold_operator = "GreaterThan"
-  trigger_threshold          = 0
+  trigger_threshold          = "0"
   resourcegroup_name         = azurerm_resource_group.rg.name
   enabled                    = var.enable_alerts
   common_tags                = var.common_tags
