@@ -31,6 +31,6 @@ module "pcq-consolidation-service-failures-alert" {
   trigger_threshold          = 0
   resourcegroup_name         = local.alert_resource_group_name
 
-  enabled                    = ${var.env} == "prod" ? var.enable_alerts : true
+  enabled                    = "pcq-${var.env}" == "pcq-aat" ? true : var.enable_alerts
   common_tags                = var.common_tags
 }
