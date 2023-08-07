@@ -2,12 +2,12 @@ locals {
   alert_resource_group_name = "pcq-shared-${var.env}"
 }
 
-module "pcq-consolidation-fail-action-group-slack" {
+module "pcq-consolidation-fail-action-group-slack-email" {
   source   = "git@github.com:hmcts/cnp-module-action-group"
   location = "global"
   env      = var.env
   resourcegroup_name     = local.alert_resource_group_name
-  action_group_name      = "PCQ Consolidation Fail Slack Alert - ${var.env}"
+  action_group_name      = "PCQ Consolidation Fail Slack Email Alert - ${var.env}"
   short_name             = "pcq-alert"
   email_receiver_name    = "PCQ Consolidation Service Failure Alert"
   email_receiver_address = "alerts-monitoring-aaaaklvwobh6lsictm7na5t3mi@moj.org.slack.com"
@@ -26,7 +26,7 @@ module "pcq-consolidation-service-failures-alert" {
   # window of 1 day as data extract needs to run daily
   time_window_in_minutes     = 1440
   severity_level             = "2"
-  action_group_name          = module.pcq-consolidation-fail-action-group-slack.action_group_name
+  action_group_name          = module.pcq-consolidation-fail-action-group-slack-email.action_group_name
   trigger_threshold_operator = "GreaterThan"
   trigger_threshold          = 0
   resourcegroup_name         = local.alert_resource_group_name
