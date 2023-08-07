@@ -20,7 +20,7 @@ module "pcq-consolidation-service-failures-alert" {
   ##run every 1 hrs for early alert
   frequency_in_minutes       = "60"
   # window of 1 day as data extract needs to run daily
-  time_window_in_minutes     = 1440
+  time_window_in_minutes     = "1440"
   severity_level             = "2"
   action_group_name          = module.pcq-consolidation-fail-action-group-slack-email.action_group_name
   trigger_threshold_operator = "GreaterThan"
