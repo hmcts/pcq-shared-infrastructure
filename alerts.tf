@@ -10,7 +10,7 @@ module "pcq-consolidation-fail-action-group-slack" {
   action_group_name      = "PCQ Consolidation Fail Slack Alert - ${var.env}"
   short_name             = "pcq-alert"
   email_receiver_name    = "PCQ Consolidation Service Failure Alert"
-  email_receiver_address = "alerts-monitoring-bbac7vjnaaknbv4uixozinjim@hmcts-reform.slack.com"
+  email_receiver_address = "alerts-monitoring-aaaaklvwobh6lsictm7na5t3mi@moj.org.slack.com"
 }
 
 module "pcq-consolidation-service-failures-alert" {
