@@ -1,12 +1,8 @@
-locals {
-  alert_resource_group_name = "pcq-shared-${var.env}"
-}
-
 module "pcq-consolidation-fail-action-group-slack-email" {
   source   = "git@github.com:hmcts/cnp-module-action-group"
   location = "global"
   env      = var.env
-  resourcegroup_name     = local.alert_resource_group_name
+  resourcegroup_name     = azurerm_resource_group.rg.name
   action_group_name      = "PCQ Consolidation Fail Slack Email Alert - ${var.env}"
   short_name             = "pcq-alert"
   email_receiver_name    = "PCQ Consolidation Service Failure Alert"
@@ -29,8 +25,7 @@ module "pcq-consolidation-service-failures-alert" {
   action_group_name          = module.pcq-consolidation-fail-action-group-slack-email.action_group_name
   trigger_threshold_operator = "GreaterThan"
   trigger_threshold          = 0
-  resourcegroup_name         = local.alert_resource_group_name
-
-  enabled                    = "pcq-${var.env}" == "pcq-aat" ? true : var.enable_alerts
+  resourcegroup_name         = azurerm_resource_group.rg.name
+  enabled                    = var.enable_alerts
   common_tags                = var.common_tags
 }
