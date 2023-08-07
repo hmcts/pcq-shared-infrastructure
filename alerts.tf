@@ -11,7 +11,7 @@ module "pcq-consolidation-fail-action-group-slack-email" {
 
 module "pcq-consolidation-service-failures-alert" {
   source                     = "git@github.com:hmcts/cnp-module-metric-alert"
-  location                   = var.appinsights_location
+  location                   = "global"
   app_insights_name          = "pcq-${var.env}"
   alert_name                 = "pcq-consolidation-service-${var.env}-failures-alert"
   alert_desc                 = "Triggers when pcq consolidation service fail to run"
