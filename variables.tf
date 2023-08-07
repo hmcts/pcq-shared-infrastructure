@@ -57,5 +57,5 @@ variable "destroy_me" {
 }
 
 variable "enable_alerts" {
-  default = true
+  default = false
 }
