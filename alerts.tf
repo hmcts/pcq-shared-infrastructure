@@ -19,11 +19,11 @@ module "pcq-consolidation-service-failures-alert" {
   app_insights_name          = "pcq-${var.env}"
   alert_name                 = "pcq-consolidation-service-${var.env}-failures-alert"
   alert_desc                 = "Triggers when pcq consolidation service fail to run"
-  app_insights_query         = "traces | where message contains 'Error executing Consolidation service' or
-  message !contains 'Completed the consolidation service job successfully'"
+  app_insights_query         = "traces | where message !contains 'Error executing Consolidation service' or
+  message contains 'Completed the consolidation service job successfully'"
   custom_email_subject       = "Alert: PCQ Consolidation Service failure in pcq-${var.env}"
-  ##run every 6 hrs for early alert
-  frequency_in_minutes       = 360
+  ##run every 1 hrs for early alert
+  frequency_in_minutes       = 60
   # window of 1 day as data extract needs to run daily
   time_window_in_minutes     = 1440
   severity_level             = "2"
