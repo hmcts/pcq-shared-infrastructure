@@ -30,7 +30,7 @@ The following parameters are optional
 
 - `product` The (short) name of the product. Default is "pcq". 
 - `location` The location of the Azure data center. Default is "UK South".
-- `appinsights_location` Location for Application Insights. Default is "West Europe".
+- `appinsights_location` Location for Application Insights. Default is "UK South".
 - `application_type` Type of Application Insights (Web/Other). Default is "Web".
 
 ### Output

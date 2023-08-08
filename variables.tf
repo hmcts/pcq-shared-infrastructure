@@ -4,9 +4,8 @@ variable "location" {
   default = "UK South"
 }
 
-// as of now, UK South is unavailable for Application Insights
 variable "appinsights_location" {
-  default     = "West Europe"
+  default     = "UK South"
   description = "Location for Application Insights"
 }
 
