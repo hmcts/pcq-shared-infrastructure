@@ -4,7 +4,6 @@ variable "location" {
   default = "UK South"
 }
 
-// Application Insight location has now been changed to "UK South".
 variable "appinsights_location" {
   default     = "UK South"
   description = "Location for Application Insights"
