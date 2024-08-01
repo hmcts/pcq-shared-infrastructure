@@ -30,13 +30,13 @@ module "pcq-consolidation-service-failures-alert" {
   common_tags                = var.common_tags
 }
 
-module "pcq-disposer-fail-action-group-slack-email" {
+module "pcq-disposer-fail-action-group-slack" {
   source                 = "git@github.com:hmcts/cnp-module-action-group"
   location               = "global"
   env                    = var.env
   resourcegroup_name     = azurerm_resource_group.rg.name
   action_group_name      = "PCQ Disposer Fail Slack Alert - ${var.env}"
-  short_name             = "pcq-disposer-alert"
+  short_name             = "pcq-disposer"
   email_receiver_name    = "PCQ Disposer Service Failure Alert"
   email_receiver_address = "alerts-monitoring-aaaaklvwobh6lsictm7na5t3mi@moj.org.slack.com"
 }
@@ -54,7 +54,7 @@ module "pcq-disposer-service-failures-alert" {
   # window of 1 day as disposer run daily once
   time_window_in_minutes     = var.disposer_time_window_in_minutes
   severity_level             = "2"
-  action_group_name          = module.pcq-disposer-fail-action-group-slack-email.action_group_name
+  action_group_name          = module.pcq-disposer-fail-action-group-slack.action_group_name
   trigger_threshold_operator = "GreaterThan"
   trigger_threshold          = "0"
   resourcegroup_name         = azurerm_resource_group.rg.name
