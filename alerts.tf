@@ -26,7 +26,7 @@ module "pcq-consolidation-service-failures-alert" {
   trigger_threshold_operator = "GreaterThan"
   trigger_threshold          = "0"
   resourcegroup_name         = azurerm_resource_group.rg.name
-  enabled                    = var.enable_alerts
+  enabled                    = var.enable_consolidation_alerts
   common_tags                = var.common_tags
 }
 

@@ -59,6 +59,10 @@ variable "enable_alerts" {
   default = false
 }
 
+variable "enable_consolidation_alerts" {
+  default = false
+}
+
 variable "enable_disposer_alerts" {
   default = false
 }
