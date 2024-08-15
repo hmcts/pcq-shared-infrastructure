@@ -58,3 +58,22 @@ variable "destroy_me" {
 variable "enable_alerts" {
   default = false
 }
+
+variable "enable_consolidation_alerts" {
+  default = false
+}
+
+variable "enable_disposer_alerts" {
+  default = false
+}
+
+variable "disposer_frequency_in_minutes" {
+  default = 1440
+}
+
+variable "disposer_time_window_in_minutes" {
+  default = 1440
+}
+variable "enable_summary_alerts" {
+  default = false
+}
