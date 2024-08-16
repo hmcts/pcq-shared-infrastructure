@@ -6,7 +6,7 @@ module "pcq-consolidation-fail-action-group-slack-email" {
   action_group_name      = "PCQ Consolidation Fail Slack Email Alert - ${var.env}"
   short_name             = "pcq-alert"
   email_receiver_name    = "PCQ Consolidation Service Failure Alert"
-  email_receiver_address = "alerts-monitoring-aaaaklvwobh6lsictm7na5t3mi@moj.org.slack.com"
+  email_receiver_address = data.azurerm_key_vault_secret.pcqFailureAlertEmail.value
 }
 
 module "pcq-consolidation-service-failures-alert" {
@@ -38,7 +38,7 @@ module "pcq-disposer-fail-action-group-slack" {
   action_group_name      = "PCQ Disposer Fail Slack Alert - ${var.env}"
   short_name             = "pcq-disposer"
   email_receiver_name    = "PCQ Disposer Service Failure Alert"
-  email_receiver_address = "alerts-monitoring-aaaaklvwobh6lsictm7na5t3mi@moj.org.slack.com"
+  email_receiver_address = data.azurerm_key_vault_secret.pcqFailureAlertEmail.value
 }
 
 module "pcq-disposer-service-failures-alert" {
