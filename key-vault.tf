@@ -21,3 +21,13 @@ data "azurerm_key_vault" "pcq_key_vault" {
 output "vaultName" {
   value = module.pcq-vault.key_vault_name
 }
+
+data "azurerm_key_vault_secret" "pcqDisposerSummaryAlertEmail" {
+  name         = "pcqDisposerSummaryAlertEmail"
+  key_vault_id = data.azurerm_key_vault.pcq_key_vault.id
+}
+
+data "azurerm_key_vault_secret" "pcqFailureAlertEmail" {
+  name         = "pcqFailureAlertEmail"
+  key_vault_id = data.azurerm_key_vault.pcq_key_vault.id
+}
