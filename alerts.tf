@@ -6,7 +6,7 @@ module "pcq-consolidation-fail-action-group-slack-email" {
   action_group_name      = "PCQ Consolidation Fail Slack Email Alert - ${var.env}"
   short_name             = "pcq-alert"
   email_receiver_name    = "PCQ Consolidation Service Failure Alert"
-  email_receiver_address = "alerts-monitoring-aaaaklvwobh6lsictm7na5t3mi@moj.org.slack.com"
+  email_receiver_address = data.azurerm_key_vault_secret.pcqFailureAlertEmail.value
 }
 
 module "pcq-consolidation-service-failures-alert" {
@@ -38,7 +38,7 @@ module "pcq-disposer-fail-action-group-slack" {
   action_group_name      = "PCQ Disposer Fail Slack Alert - ${var.env}"
   short_name             = "pcq-disposer"
   email_receiver_name    = "PCQ Disposer Service Failure Alert"
-  email_receiver_address = "alerts-monitoring-aaaaklvwobh6lsictm7na5t3mi@moj.org.slack.com"
+  email_receiver_address = data.azurerm_key_vault_secret.pcqFailureAlertEmail.value
 }
 
 module "pcq-disposer-service-failures-alert" {
@@ -123,5 +123,37 @@ module "pcq-consolidation-service-summary-alert" {
   trigger_threshold          = "0"
   resourcegroup_name         = azurerm_resource_group.rg.name
   enabled                    = var.enable_summary_alerts
+  common_tags                = var.common_tags
+}
+
+module "pcq-loader-failure-action-group-slack" {
+  source                 = "git@github.com:hmcts/cnp-module-action-group"
+  location               = "global"
+  env                    = var.env
+  resourcegroup_name     = azurerm_resource_group.rg.name
+  action_group_name      = "PCQ Loader Failure Slack Alert - ${var.env}"
+  short_name             = "pcq-loader"
+  email_receiver_name    = "PCQ Loader Service Failure Alert"
+  email_receiver_address = data.azurerm_key_vault_secret.pcqFailureAlertEmail.value
+}
+
+module "pcq-loader-service-failure-alert" {
+  source               = "git@github.com:hmcts/cnp-module-metric-alert"
+  location             = "uksouth"
+  app_insights_name    = "pcq-${var.env}"
+  alert_name           = "pcq-loader-service-${var.env}-failure-alert"
+  alert_desc           = "Alert when PCQ Loader Service fail to run"
+  app_insights_query   = "traces | where message contains 'Error executing Pcq Loader'"
+  custom_email_subject = "Alert: PCQ Loader Service failure in pcq-${var.env}"
+  ##run every 15 mins as Loader runs every 15 mins
+  frequency_in_minutes = "15"
+  # window of 15mins
+  time_window_in_minutes     = "15"
+  severity_level             = "2"
+  action_group_name          = module.pcq-loader-failure-action-group-slack.action_group_name
+  trigger_threshold_operator = "GreaterThan"
+  trigger_threshold          = "0"
+  resourcegroup_name         = azurerm_resource_group.rg.name
+  enabled                    = var.enable_loader_alerts
   common_tags                = var.common_tags
 }

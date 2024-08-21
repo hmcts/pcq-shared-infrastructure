@@ -77,3 +77,7 @@ variable "disposer_time_window_in_minutes" {
 variable "enable_summary_alerts" {
   default = false
 }
+
+variable "enable_loader_alerts" {
+  default = false
+}
