@@ -68,7 +68,7 @@ variable "enable_disposer_alerts" {
 }
 
 variable "disposer_frequency_in_minutes" {
-  default = 1440
+  default = 1080
 }
 
 variable "disposer_time_window_in_minutes" {
