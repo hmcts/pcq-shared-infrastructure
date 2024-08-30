@@ -49,7 +49,7 @@ module "pcq-disposer-service-failures-alert" {
   alert_desc           = "Triggers when pcq disposer service fail to run"
   app_insights_query   = "traces | where message contains 'Error executing PCQ Disposer service' | where toint(dayofweek(timestamp)/1d) < 5"
   custom_email_subject = "Alert: PCQ Disposer Service failure in pcq-${var.env}"
-  ##run every 18 hours for early alert
+  ##run every day as disposer runs only once
   frequency_in_minutes = var.disposer_frequency_in_minutes
   # window of 1 day as disposer run daily once
   time_window_in_minutes     = var.disposer_time_window_in_minutes
