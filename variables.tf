@@ -72,7 +72,7 @@ variable "disposer_frequency_in_minutes" {
 }
 
 variable "disposer_time_window_in_minutes" {
-  default = 1140
+  default = 1440
 }
 variable "enable_summary_alerts" {
   default = false
