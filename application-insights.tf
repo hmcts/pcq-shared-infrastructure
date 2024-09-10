@@ -18,10 +18,12 @@ resource "azurerm_key_vault_secret" "appInsights-InstrumentationKey" {
   name         = "AppInsightsInstrumentationKey"
   value        = module.application_insights.instrumentation_key
   key_vault_id = module.pcq-vault.key_vault_id
+  location     = var.appinsights_location
 }
 
 resource "azurerm_key_vault_secret" "app_insights_connection_string" {
   name         = "app-insights-connection-string"
   value        = module.application_insights.connection_string
   key_vault_id = module.pcq-vault.key_vault_id
+  location     = var.appinsights_location
 }
