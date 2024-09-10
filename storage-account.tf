@@ -33,7 +33,6 @@ module "pcq_storage_account" {
 
   // enable_blob_encryption    = true
   // enable_file_encryption    = true
-  //enable_https_traffic_only = true
 
   // Tags
   common_tags  = var.common_tags
