@@ -3,7 +3,7 @@ module "application_insights" {
 
   env                 = var.env
   product             = var.product
-  location            = "uksouth"
+  location            = var.appinsights_location
   application_type    = var.application_type
   resource_group_name = azurerm_resource_group.rg.name
   common_tags = var.common_tags
