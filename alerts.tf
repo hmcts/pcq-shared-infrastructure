@@ -79,7 +79,7 @@ module "pcq-disposer-service-summary-alert" {
   app_insights_name    = "pcq-${var.env}"
   alert_name           = "pcq-disposer-service-${var.env}-summary-alert"
   alert_desc           = "Alert when PCQ disposer run"
-  app_insights_query   = "traces | where message contains 'PCQ disposer completed.Total deleted:' | where toint(dayofweek(timestamp)/1d) < 5"
+  app_insights_query   = "traces | where message contains 'PCQ disposer completed.Total deleted PCQ records:' | where toint(dayofweek(timestamp)/1d) < 5"
   custom_email_subject = "Alert: PCQ Disposer Service Summary in pcq-${var.env}"
   ##run every day as disposer runs only once
   frequency_in_minutes = var.disposer_frequency_in_minutes
