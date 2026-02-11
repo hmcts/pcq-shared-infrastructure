@@ -34,11 +34,11 @@ data "azurerm_key_vault_secret" "pcqFailureAlertEmail" {
 
 resource "azurerm_key_vault_secret" "frontend_redis_secret" {
   name         = "frontend-redis-secret"
-  value        = random_password.frontend_redis_secret.result
+  value        = random_password.frontend_redis_secret_password.result
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
-resource "random_password" "frontend_redis_secret" {
+resource "random_password" "frontend_redis_secret_password" {
   length           = 32
   override_special = "()-_"
 
