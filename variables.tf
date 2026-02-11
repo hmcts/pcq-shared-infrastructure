@@ -81,3 +81,8 @@ variable "enable_summary_alerts" {
 variable "enable_loader_alerts" {
   default = false
 }
+
+variable "frontend_redis_secret_rotation" {
+  default     = "1"
+  description = "Bump to rotate the frontend redis session secret."
+}
