@@ -166,7 +166,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "pcq_loader_failure_al
 
   action {
     action_groups = [
-      module.pcq-loader-failure-action-group-slack.id
+      module.pcq-loader-failure-action-group-slack.action_group_id
     ]
   }
 
