@@ -137,23 +137,34 @@ module "pcq-loader-failure-action-group-slack" {
   email_receiver_address = data.azurerm_key_vault_secret.pcqFailureAlertEmail.value
 }
 
-module "pcq-loader-service-failure-alert" {
-  source               = "git@github.com:hmcts/cnp-module-metric-alert"
-  location             = "uksouth"
-  app_insights_name    = "pcq-${var.env}"
-  alert_name           = "pcq-loader-service-${var.env}-failure-alert"
-  alert_desc           = "Alert when PCQ Loader Service fail to run"
-  app_insights_query   = "traces | where message contains 'Error executing Pcq Loader'"
-  custom_email_subject = "Alert: PCQ Loader Service failure in pcq-${var.env}"
-  ##run every 15 mins as Loader runs every 15 mins
-  frequency_in_minutes = "15"
-  # window of 15mins
-  time_window_in_minutes     = "15"
-  severity_level             = "2"
-  action_group_name          = module.pcq-loader-failure-action-group-slack.action_group_name
-  trigger_threshold_operator = "GreaterThan"
-  trigger_threshold          = "0"
-  resourcegroup_name         = azurerm_resource_group.rg.name
-  enabled                    = var.enable_loader_alerts
-  common_tags                = var.common_tags
+resource "azurerm_monitor_scheduled_query_rules_alert" "pcq_loader_failure_alert" {
+  name                = "pcq-loader-${var.env}-failure-alert"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.rg.name
+  description = "Alert when PCQ Loader fail to run or any exception in the loader execution"
+  data_source_id = module.application_insights.id
+  enabled  = var.enable_loader_alerts
+  severity = 2
+  frequency   = 15
+  time_window = 15
+
+  query = <<-QUERY
+    traces | where message contains '[PCQ_LOADER_ERROR]'
+  QUERY
+
+  trigger {
+    operator  = "GreaterThan"
+    threshold = 0
+  }
+  throttling = 1440  # 24 hours
+
+  action {
+    action_group = [
+      module.pcq-loader-failure-action-group-slack.id
+    ]
+
+    email_subject = "Alert: PCQ Loader failure in pcq-${var.env}"
+  }
+
+  tags = var.common_tags
 }
