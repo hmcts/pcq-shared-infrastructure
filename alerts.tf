@@ -141,17 +141,17 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "pcq_loader_failure_al
   name                = "pcq-loader-${var.env}-failure-alert"
   location            = var.location
   resource_group_name = azurerm_resource_group.rg.name
-  description = "Alert when PCQ Loader fail to run or any exception in the loader execution"
-  enabled     = var.enable_loader_alerts
-  severity    = 2
+  description         = "Alert when PCQ Loader fail to run or any exception in the loader execution"
+  enabled             = var.enable_loader_alerts
+  severity            = 2
 
   scopes = [
     module.application_insights.id
   ]
 
-  evaluation_frequency = "PT15M"
-  window_duration      = "PT15M"
-  mute_actions_after_alert_duration  = "PT24H"
+  evaluation_frequency              = "PT15M"
+  window_duration                   = "PT15M"
+  mute_actions_after_alert_duration = "PT24H"
 
   criteria {
     query = <<-QUERY
@@ -160,8 +160,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "pcq_loader_failure_al
     QUERY
 
     time_aggregation_method = "Count"
-    operator  = "GreaterThan"
-    threshold = 0
+    operator                = "GreaterThan"
+    threshold               = 0
   }
 
   action {
