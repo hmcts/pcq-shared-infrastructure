@@ -151,7 +151,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "pcq_loader_failure_al
 
   evaluation_frequency              = "PT15M"
   window_duration                   = "PT15M"
-  mute_actions_after_alert_duration = "PT24H"
+  mute_actions_after_alert_duration = "P1D"
 
   criteria {
     query = <<-QUERY
