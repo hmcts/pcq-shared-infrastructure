@@ -137,23 +137,40 @@ module "pcq-loader-failure-action-group-slack" {
   email_receiver_address = data.azurerm_key_vault_secret.pcqFailureAlertEmail.value
 }
 
-module "pcq-loader-service-failure-alert" {
-  source               = "git@github.com:hmcts/cnp-module-metric-alert"
-  location             = "uksouth"
-  app_insights_name    = "pcq-${var.env}"
-  alert_name           = "pcq-loader-service-${var.env}-failure-alert"
-  alert_desc           = "Alert when PCQ Loader Service fail to run"
-  app_insights_query   = "traces | where message contains 'Error executing Pcq Loader'"
-  custom_email_subject = "Alert: PCQ Loader Service failure in pcq-${var.env}"
-  ##run every 15 mins as Loader runs every 15 mins
-  frequency_in_minutes = "15"
+resource "azurerm_monitor_scheduled_query_rules_alert_v2" "pcq_loader_failure_alert" {
+  name                = "pcq-loader-${var.env}-failure-alert"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.rg.name
+  description         = "Alert when PCQ Loader fail to run or any exception in the loader execution"
+  enabled             = var.enable_loader_alerts
+  severity            = 2
+
+  scopes = [
+    module.application_insights.id
+  ]
+  #run every 15 mins as Loader runs every 15 mins
+  evaluation_frequency = "PT15M"
   # window of 15mins
-  time_window_in_minutes     = "15"
-  severity_level             = "2"
-  action_group_name          = module.pcq-loader-failure-action-group-slack.action_group_name
-  trigger_threshold_operator = "GreaterThan"
-  trigger_threshold          = "0"
-  resourcegroup_name         = azurerm_resource_group.rg.name
-  enabled                    = var.enable_loader_alerts
-  common_tags                = var.common_tags
+  window_duration = "PT15M"
+  # alert once in a day even errors are there in every run
+  mute_actions_after_alert_duration = "P1D"
+
+  criteria {
+    query = <<-QUERY
+      traces
+      | where message contains "[PCQ_LOADER_ERROR]"
+    QUERY
+
+    time_aggregation_method = "Count"
+    operator                = "GreaterThan"
+    threshold               = 0
+  }
+
+  action {
+    action_groups = [
+      module.pcq-loader-failure-action-group-slack.action_group_id
+    ]
+  }
+
+  tags = var.common_tags
 }
