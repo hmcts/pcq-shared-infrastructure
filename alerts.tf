@@ -137,33 +137,37 @@ module "pcq-loader-failure-action-group-slack" {
   email_receiver_address = data.azurerm_key_vault_secret.pcqFailureAlertEmail.value
 }
 
-resource "azurerm_monitor_scheduled_query_rules_alert" "pcq_loader_failure_alert" {
+resource "azurerm_monitor_scheduled_query_rules_alert_v2" "pcq_loader_failure_alert" {
   name                = "pcq-loader-${var.env}-failure-alert"
   location            = var.location
   resource_group_name = azurerm_resource_group.rg.name
   description = "Alert when PCQ Loader fail to run or any exception in the loader execution"
-  data_source_id = module.application_insights.id
-  enabled  = var.enable_loader_alerts
-  severity = 2
-  frequency   = 15
-  time_window = 15
+  enabled     = var.enable_loader_alerts
+  severity    = 2
 
-  query = <<-QUERY
-    traces | where message contains '[PCQ_LOADER_ERROR]'
-  QUERY
+  scopes = [
+    module.application_insights.id
+  ]
 
-  trigger {
+  evaluation_frequency = "PT15M"
+  window_duration      = "PT15M"
+  mute_actions_after_alert_duration  = "PT24H"
+
+  criteria {
+    query = <<-QUERY
+      traces
+      | where message contains "[PCQ_LOADER_ERROR]"
+    QUERY
+
+    time_aggregation_method = "Count"
     operator  = "GreaterThan"
     threshold = 0
   }
-  throttling = 1440  # 24 hours
 
   action {
-    action_group = [
+    action_groups = [
       module.pcq-loader-failure-action-group-slack.id
     ]
-
-    email_subject = "Alert: PCQ Loader failure in pcq-${var.env}"
   }
 
   tags = var.common_tags
