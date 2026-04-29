@@ -148,10 +148,10 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "pcq_loader_failure_al
   scopes = [
     module.application_insights.id
   ]
- #run every 15 mins as Loader runs every 15 mins
-  evaluation_frequency              = "PT15M"
- # window of 15mins
-  window_duration                   = "PT15M"
+  #run every 15 mins as Loader runs every 15 mins
+  evaluation_frequency = "PT15M"
+  # window of 15mins
+  window_duration = "PT15M"
   # alert once in a day even errors are there in every run
   mute_actions_after_alert_duration = "P1D"
 
