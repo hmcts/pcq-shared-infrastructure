@@ -174,3 +174,52 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "pcq_loader_failure_al
 
   tags = var.common_tags
 }
+
+module "pcq-loader-summary-action-group-slack" {
+  source                 = "git@github.com:hmcts/cnp-module-action-group"
+  location               = "global"
+  env                    = var.env
+  resourcegroup_name     = azurerm_resource_group.rg.name
+  action_group_name      = "PCQ Loader Summary Slack Alert - ${var.env}"
+  short_name             = "pcq-loader"
+  email_receiver_name    = "PCQ Loader Service Summary Alert"
+  email_receiver_address = data.azurerm_key_vault_secret.pcqDisposerSummaryAlertEmail.value
+}
+
+resource "azurerm_monitor_scheduled_query_rules_alert_v2" "pcq_loader_summary_alert" {
+  name                = "pcq-loader-${var.env}-summary-alert"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.rg.name
+  description         = "Alert when PCQ Loader run and present summary"
+  enabled             = var.enable_loader_alerts
+  severity            = 2
+
+  scopes = [
+    module.application_insights.id
+  ]
+  #run every 15 mins as Loader runs every 15 mins
+  evaluation_frequency = "PT15M"
+  # window of 15mins
+  window_duration = "PT15M"
+  # alert once in a day even it runs every 15mins and present summary in every run
+  mute_actions_after_alert_duration = "P1D"
+
+  criteria {
+    query = <<-QUERY
+      traces
+      | where message contains "PCQ Loader Record Summary :"
+    QUERY
+
+    time_aggregation_method = "Count"
+    operator                = "GreaterThan"
+    threshold               = 0
+  }
+
+  action {
+    action_groups = [
+      module.pcq-loader-summary-action-group-slack.action_group_id
+    ]
+  }
+
+  tags = var.common_tags
+}
