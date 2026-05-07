@@ -175,19 +175,19 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "pcq_loader_failure_al
   tags = var.common_tags
 }
 
-module "pcq-loader-summary-action-group-slack" {
+module "pcq-loader-service-summary-action-group-slack" {
   source                 = "git@github.com:hmcts/cnp-module-action-group"
   location               = "global"
   env                    = var.env
   resourcegroup_name     = azurerm_resource_group.rg.name
-  action_group_name      = "PCQ Loader Summary Slack Alert - ${var.env}"
+  action_group_name      = "PCQ Loader Service Summary Slack Alert - ${var.env}"
   short_name             = "pcq-loader"
   email_receiver_name    = "PCQ Loader Service Summary Alert"
   email_receiver_address = data.azurerm_key_vault_secret.pcqDisposerSummaryAlertEmail.value
 }
 
-resource "azurerm_monitor_scheduled_query_rules_alert_v2" "pcq_loader_summary_alert" {
-  name                = "pcq-loader-${var.env}-summary-alert"
+resource "azurerm_monitor_scheduled_query_rules_alert_v2" "pcq_loader_service_summary_alert" {
+  name                = "pcq-loader-service-${var.env}-summary-alert"
   location            = var.location
   resource_group_name = azurerm_resource_group.rg.name
   description         = "Alert when PCQ Loader run and present summary"
@@ -217,7 +217,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "pcq_loader_summary_al
 
   action {
     action_groups = [
-      module.pcq-loader-summary-action-group-slack.action_group_id
+      module.pcq-loader-service-summary-action-group-slack.action_group_id
     ]
   }
 
