@@ -181,7 +181,7 @@ module "pcq-loader-service-summary-action-group-slack" {
   env                    = var.env
   resourcegroup_name     = azurerm_resource_group.rg.name
   action_group_name      = "PCQ Loader Service Summary Slack Alert - ${var.env}"
-  short_name             = "pcq-loader-summary"
+  short_name             = "loader-sum"
   email_receiver_name    = "PCQ Loader Service Summary Alert"
   email_receiver_address = data.azurerm_key_vault_secret.pcqDisposerSummaryAlertEmail.value
 }
