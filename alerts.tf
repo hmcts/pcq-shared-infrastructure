@@ -7,6 +7,7 @@ module "pcq-consolidation-fail-action-group-slack-email" {
   short_name             = "pcq-alert"
   email_receiver_name    = "PCQ Consolidation Service Failure Alert"
   email_receiver_address = data.azurerm_key_vault_secret.pcqFailureAlertEmail.value
+  tags                   = var.common_tags
 }
 
 module "pcq-consolidation-service-failures-alert" {
@@ -39,6 +40,7 @@ module "pcq-disposer-fail-action-group-slack" {
   short_name             = "pcq-disposer"
   email_receiver_name    = "PCQ Disposer Service Failure Alert"
   email_receiver_address = data.azurerm_key_vault_secret.pcqFailureAlertEmail.value
+  tags                   = var.common_tags
 }
 
 module "pcq-disposer-service-failures-alert" {
@@ -71,6 +73,7 @@ module "pcq-disposer-summary-action-group-slack" {
   short_name             = "pcq-sum"
   email_receiver_name    = "PCQ Disposer Service Summary Alert"
   email_receiver_address = data.azurerm_key_vault_secret.pcqDisposerSummaryAlertEmail.value
+  tags                   = var.common_tags
 }
 
 module "pcq-disposer-service-summary-alert" {
@@ -103,6 +106,7 @@ module "pcq-consolidation-summary-action-group-slack" {
   short_name             = "pcq-conso"
   email_receiver_name    = "PCQ Consolidation Service Summary Alert"
   email_receiver_address = data.azurerm_key_vault_secret.pcqDisposerSummaryAlertEmail.value
+  tags                   = var.common_tags
 }
 
 module "pcq-consolidation-service-summary-alert" {
@@ -135,6 +139,7 @@ module "pcq-loader-failure-action-group-slack" {
   short_name             = "pcq-loader"
   email_receiver_name    = "PCQ Loader Service Failure Alert"
   email_receiver_address = data.azurerm_key_vault_secret.pcqFailureAlertEmail.value
+  tags                   = var.common_tags
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert_v2" "pcq_loader_failure_alert" {
@@ -184,6 +189,7 @@ module "pcq-loader-service-summary-action-group-slack" {
   short_name             = "loader-sum"
   email_receiver_name    = "PCQ Loader Service Summary Alert"
   email_receiver_address = data.azurerm_key_vault_secret.pcqDisposerSummaryAlertEmail.value
+  tags                   = var.common_tags
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert_v2" "pcq_loader_service_summary_alert" {
