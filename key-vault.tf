@@ -8,8 +8,6 @@ module "pcq-vault" {
   jenkins_object_id   = data.azurerm_user_assigned_identity.jenkins.principal_id
   resource_group_name = azurerm_resource_group.rg.name
 
-  grant_preview_jenkins_access = var.env == "aat"
-
   # dcd_group_pcq_v2 group object ID
   product_group_object_id = "731343b8-be79-4a97-b14e-60be786ad393"
   common_tags             = var.common_tags
