@@ -14,7 +14,10 @@ locals {
     data.azurerm_subnet.aks-01-infra.id
   ]
 
-  preview_subnets  = var.env == "aat" ? [data.azurerm_subnet.aks-00-preview.id, data.azurerm_subnet.aks-01-preview.id] : []
+  preview_subnets  = var.env == "aat" ? [
+      data.azurerm_subnet.aks-00-preview[0].id,
+      data.azurerm_subnet.aks-01-preview[0].id
+    ] : []
   sa_subnets       = concat(local.standard_subnets, local.preview_subnets)
 }
 
@@ -109,23 +112,26 @@ data "azurerm_subnet" "aks-01-infra" {
 }
 
 data "azurerm_virtual_network" "aks_preview_vnet" {
+  count               = var.env == "aat" ? 1 : 0
   provider            = azurerm.aks-preview
   name                = "cft-preview-vnet"
   resource_group_name = "cft-preview-network-rg"
 }
 
 data "azurerm_subnet" "aks-00-preview" {
+  count                = var.env == "aat" ? 1 : 0
   provider             = azurerm.aks-preview
   name                 = "aks-00"
-  virtual_network_name = data.azurerm_virtual_network.aks_preview_vnet.name
-  resource_group_name  = data.azurerm_virtual_network.aks_preview_vnet.resource_group_name
+  virtual_network_name = data.azurerm_virtual_network.aks_preview_vnet[0].name
+  resource_group_name  = data.azurerm_virtual_network.aks_preview_vnet[0].resource_group_name
 }
 
 data "azurerm_subnet" "aks-01-preview" {
+  count                = var.env == "aat" ? 1 : 0
   provider             = azurerm.aks-preview
   name                 = "aks-01"
-  virtual_network_name = data.azurerm_virtual_network.aks_preview_vnet.name
-  resource_group_name  = data.azurerm_virtual_network.aks_preview_vnet.resource_group_name
+  virtual_network_name = data.azurerm_virtual_network.aks_preview_vnet[0].name
+  resource_group_name  = data.azurerm_virtual_network.aks_preview_vnet[0].resource_group_name
 }
 
 resource "azurerm_storage_container" "pcq_containers" {
