@@ -81,3 +81,8 @@ variable "enable_summary_alerts" {
 variable "enable_loader_alerts" {
   default = false
 }
+
+variable "sampling_percentage" {
+  default     = null
+  description = "Sampling percentage for Application Insights. null uses default value from terraform-module-application-insights."
+}
