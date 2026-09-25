@@ -14,11 +14,11 @@ locals {
     data.azurerm_subnet.aks-01-infra.id
   ]
 
-  preview_subnets  = var.env == "aat" ? [
-      data.azurerm_subnet.aks-00-preview[0].id,
-      data.azurerm_subnet.aks-01-preview[0].id
-    ] : []
-  sa_subnets       = concat(local.standard_subnets, local.preview_subnets)
+  preview_subnets = var.env == "aat" ? [
+    data.azurerm_subnet.aks-00-preview[0].id,
+    data.azurerm_subnet.aks-01-preview[0].id
+  ] : []
+  sa_subnets = concat(local.standard_subnets, local.preview_subnets)
 }
 
 // pcq blob Storage Account
